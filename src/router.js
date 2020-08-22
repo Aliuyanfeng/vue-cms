@@ -4,7 +4,7 @@ import Home from './components/tabs/home.vue'
 import Member from './components/tabs/member.vue'
 import Shopcar from './components/tabs/shopcar.vue'
 import Search from './components/tabs/search.vue'
-
+import Newslist from './components/news/newslist.vue'
 
 
 const router = new VueRouter({
@@ -27,7 +27,10 @@ const router = new VueRouter({
         {
             path: '/search',
             component: Search
-        },
+        }, {
+            path: '/home/newslist',
+            component: Newslist
+        }
 
     ],
     linkActiveClass: 'mui-active'

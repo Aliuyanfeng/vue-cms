@@ -6,12 +6,13 @@
         <mt-button icon="back">返回</mt-button>
       </span>
     </mt-header>
-
-    <router-view></router-view>
+    <transition>
+      <router-view></router-view>
+    </transition>
 
     <!-- tarbar -->
     <nav class="mui-bar mui-bar-tab">
-      <router-link class="mui-tab-item " to="/home">
+      <router-link class="mui-tab-item" to="/home">
         <span class="mui-icon mui-icon-home"></span>
         <span class="mui-tab-label">首页</span>
       </router-link>
@@ -40,5 +41,19 @@ export default {};
 <style lang="scss" scoped>
 .app-container {
   padding-top: 40px;
+  overflow: hidden;
+}
+.v-enter {
+  opacity: 0;
+  transform: translateX(100%);
+}
+.v-leave-to {
+  opacity: 0;
+  transform: translateX(-100%);
+  position: absolute;
+}
+.v-enter-active,
+.v-leave-active {
+  transition: all 0.4s ease;
 }
 </style>

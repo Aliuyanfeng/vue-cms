@@ -35,12 +35,17 @@
 </template>
 
 <script>
-export default {};
+export default {
+  methods:{
+
+  }
+};
 </script>
 
 <style lang="scss" scoped>
 .app-container {
   padding-top: 40px;
+  padding-bottom: 50px;
   overflow: hidden;
 }
 .v-enter {
@@ -55,5 +60,8 @@ export default {};
 .v-enter-active,
 .v-leave-active {
   transition: all 0.4s ease;
+}
+.mint-header{
+  z-index: 99;
 }
 </style>

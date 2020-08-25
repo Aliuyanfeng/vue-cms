@@ -10,6 +10,13 @@ Vue.use(MintUi) //批量注册
 import '../lib/mui/css/mui.min.css'
 import '../lib/mui/css/icons-extra.css'
 import './filters'
+
+//安装图片预览插件
+import VuePreview from 'vue-preview'
+Vue.use(VuePreview)
+
+
+
 //配置axios
 import axios from 'axios'
 Vue.prototype.$http = axios.create({

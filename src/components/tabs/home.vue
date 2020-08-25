@@ -1,11 +1,7 @@
 <template>
   <div>
     <!-- swipe -->
-    <mt-swipe :auto="4000">
-      <mt-swipe-item v-for="(item,i) in lunbotu" :key="i">
-        <img :src="item.img" alt />
-      </mt-swipe-item>
-    </mt-swipe>
+    <swipe :lunbotu="lunbotu" :imgname="'img'" :isfull="true"></swipe>
     <!-- 九宫格 -->
     <ul class="mui-table-view mui-grid-view mui-grid-9">
       <li class="mui-table-view-cell mui-media mui-col-xs-4 mui-col-sm-3">
@@ -21,10 +17,10 @@
         </router-link>
       </li>
       <li class="mui-table-view-cell mui-media mui-col-xs-4 mui-col-sm-3">
-        <a href="#">
+        <router-link to="/home/goodslist">
           <img src="../../images/menu3.png" alt srcset />
           <div class="mui-media-body">商品购买</div>
-        </a>
+        </router-link>
       </li>
       <li class="mui-table-view-cell mui-media mui-col-xs-4 mui-col-sm-3">
         <a href="#">
@@ -50,6 +46,7 @@
 </template>
 
 <script>
+import swipe from "../sub-components/swipe.vue";
 export default {
   data() {
     return {
@@ -65,41 +62,26 @@ export default {
       if (data.status === 0) this.lunbotu = data.message;
     },
   },
+  components: {
+    swipe: swipe,
+  },
 };
 </script>
 
 <style lang="scss" scoped>
-.mint-swipe {
-  height: 180px;
-}
-.mint-swipe-item {
-  img {
-    width: 100%;
-    height: 100%;
-  }
-  &:nth-child(1) {
-    background-color: red;
-  }
-  &:nth-child(2) {
-    background-color: pink;
-  }
-  &:nth-child(3) {
-    background-color: green;
-  }
-}
-.mui-grid-view{
-    // background-color: #fff;
-    li{
-        img{
-            width: 60px;
-            height: 60px;
-        }
+.mui-grid-view {
+  // background-color: #fff;
+  li {
+    img {
+      width: 60px;
+      height: 60px;
     }
+  }
 }
-.mui-grid-view.mui-grid-9{
-    background-color: #fff;
+.mui-grid-view.mui-grid-9 {
+  background-color: #fff;
 }
-.mui-grid-view.mui-grid-9 .mui-table-view-cell{
-    border: none;
+.mui-grid-view.mui-grid-9 .mui-table-view-cell {
+  border: none;
 }
 </style>

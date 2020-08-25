@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "webpack-dev-server --open --port 3000 --host 127.0.0.1 --hot",
+    "dev": "webpack-dev-server --open --port 5000 --host 192.168.137.1 --hot",
     "pub": "webpack --config webpack.publish.config.js"
   },
   "keywords": [],
@@ -40,6 +40,7 @@
     "axios": "^0.17.1",
     "mint-ui": "^2.2.13",
     "vue": "^2.5.13",
+    "vue-preview": "^1.0.5",
     "vue-router": "^3.0.1"
   }
 }

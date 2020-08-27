@@ -9,10 +9,16 @@ import router from './router.js'
 
 import App from './components/App.vue'
 
+//导入状态管理对象
+import store from './store.js'
+
+
+
 const vm = new Vue({
     el: '#app',
     render(h) {
         return h(App)
     },
-    router: router
+    router,
+    store
 })

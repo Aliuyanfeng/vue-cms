@@ -1,5 +1,9 @@
  <template>
   <div class="goodsinfo-container">
+    <transition @before-enter="beforeEnter" @enter="enter" @after-enter="afterEnter">
+      <div class="ball" v-show="flag"></div>
+    </transition>
+
     <!-- 轮播图区域 -->
     <div class="mui-card">
       <div class="mui-card-content">
@@ -23,10 +27,13 @@
               style="font-size:16px;font-weight:bolder;color:red"
             >￥{{goodsinfo.sell_price}}</span>
           </p>
-          <p>购买数量：<numberbox :max="goodsinfo.stock_quantity"></numberbox></p>
+          <p>
+            购买数量：
+            <numberbox :max="goodsinfo.stock_quantity" @func="getSelectedCount"></numberbox>
+          </p>
           <div>
             <mt-button type="primary">立即购买</mt-button>
-            <mt-button type="danger">加入购物车</mt-button>
+            <mt-button type="danger" @click="addcart">加入购物车</mt-button>
           </div>
         </div>
       </div>
@@ -42,8 +49,12 @@
         </div>
       </div>
       <div class="mui-card-footer btnarea">
-        <mt-button type="primary" size="large" plain>图文介绍</mt-button>
-        <mt-button type="danger" size="large" plain style="margin-top:10px">商品评论</mt-button>
+        <!-- <router-link :to="'/home/goodsdesc/'+id">
+          <mt-button type="primary" size="large" plain>图文介绍</mt-button>
+        </router-link>-->
+        <!-- 使用编程式导航 -->
+        <mt-button type="primary" size="large" plain @click="godesc">图文介绍</mt-button>
+        <mt-button type="danger" size="large" plain style="margin-top:10px" @click="gocomment">商品评论</mt-button>
       </div>
     </div>
   </div>
@@ -51,14 +62,18 @@
 <script>
 import swipe from "../sub-components/swipe.vue";
 import numberbox from "../sub-components/numberbox.vue";
+import { mapMutations } from "vuex";
 export default {
   data() {
     return {
       lunbotu: [],
       goodsinfo: {},
+      flag: false,
+      selectedCount: 1,
     };
   },
   methods: {
+    ...mapMutations(["addtocart"]),
     async getlunbotu() {
       const { data } = await this.$http.get("/api/getthumimages/" + this.id);
       if (data.status === 0) return (this.lunbotu = data.message);
@@ -67,6 +82,43 @@ export default {
       const { data } = await this.$http.get("/api/goods/getinfo/" + this.id);
 
       if (data.status === 0) return (this.goodsinfo = data.message[0]);
+    },
+    godesc() {
+      // 点击按钮跳转详述页面
+      this.$router.push("/home/goodsdesc/" + this.goodsinfo.id);
+    },
+    gocomment() {
+      this.$router.push("/home/goodscomment/" + this.goodsinfo.id);
+    },
+    addcart() {
+      this.flag = !this.flag;
+      //调用mutations
+      // this.$store.commit("addtocart", {
+      //   id: this.id,
+      //   count: this.selectedCount,
+      // });
+      this.addtocart({ id: this.id, count: this.selectedCount });
+    },
+    beforeEnter(el) {
+      el.style.transform = "translate(0,0)";
+    },
+    enter(el, done) {
+      el.offsetWidth;
+
+      //动态获取小球坐标
+      const ballPos = el.getBoundingClientRect();
+      const badgePos = document.getElementById("badge").getBoundingClientRect();
+      const left = badgePos.left - ballPos.left;
+      const top = badgePos.top - ballPos.top;
+      el.style.transform = "translate(" + left + "px," + top + "px)";
+      el.style.transition = "all 1s cubic-bezier(.46,-0.4,1,.49)";
+      done();
+    },
+    afterEnter(el) {
+      this.flag = !this.flag;
+    },
+    getSelectedCount(c) {
+      this.selectedCount = c;
     },
   },
   created() {
@@ -86,5 +138,15 @@ export default {
 }
 .btnarea {
   flex-direction: column;
+}
+.ball {
+  width: 15px;
+  height: 15px;
+  background-color: red;
+  border-radius: 50%;
+  position: absolute;
+  z-index: 99;
+  left: 152px;
+  top: 370px;
 }
 </style>

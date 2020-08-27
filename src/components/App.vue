@@ -2,7 +2,7 @@
   <div class="app-container">
     <!-- header部分 -->
     <mt-header fixed title="Vue-Cms实战项目">
-      <span to="/" slot="left">
+      <span to="/" slot="left" @click="goback()" v-show="flag">
         <mt-button icon="back">返回</mt-button>
       </span>
     </mt-header>
@@ -22,7 +22,7 @@
       </router-link>
       <router-link class="my-tab-item" to="/shopcar">
         <span class="mui-icon mui-icon-extra mui-icon-extra-cart">
-          <span class="mui-badge">0</span>
+          <span class="mui-badge" id="badge">{{totalcount}}</span>
         </span>
         <span class="mui-tab-label">购物车</span>
       </router-link>
@@ -35,9 +35,29 @@
 </template>
 
 <script>
+import { mapGetters } from "vuex";
 export default {
-  methods:{
-
+  data() {
+    return {
+      flag: false,
+    };
+  },
+  methods: {
+    goback() {
+      this.$router.go(-1);
+    },
+  },
+  watch: {
+    "$route.path": function (newval, oldval) {
+      if (newval === "/home") {
+        this.flag = false;
+      } else {
+        this.flag = true;
+      }
+    },
+  },
+  computed:{
+    ...mapGetters(['totalcount'])
   }
 };
 </script>
@@ -61,44 +81,35 @@ export default {
 .v-leave-active {
   transition: all 0.4s ease;
 }
-.mint-header{
+.mint-header {
   z-index: 99;
 }
 
 .mui-bar-tab .my-tab-item.mui-active {
-    color: #007aff;
+  color: #007aff;
 }
 .mui-bar-tab .my-tab-item {
-    display: table-cell;
-    overflow: hidden;
-    width: 1%;
-    height: 50px;
-    text-align: center;
-    vertical-align: middle;
-    white-space: nowrap;
-    text-overflow: ellipsis;
-    color: #929292;
+  display: table-cell;
+  overflow: hidden;
+  width: 1%;
+  height: 50px;
+  text-align: center;
+  vertical-align: middle;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  color: #929292;
 }
 .mui-bar-tab .my-tab-item .mui-icon {
-    top: 3px;
-    width: 24px;
-    height: 24px;
-    padding-top: 0;
-    padding-bottom: 0;
+  top: 3px;
+  width: 24px;
+  height: 24px;
+  padding-top: 0;
+  padding-bottom: 0;
 }
-.mui-bar-tab .my-tab-item .mui-icon~.mui-tab-label {
-    font-size: 11px;
-    display: block;
-    overflow: hidden;
-    text-overflow: ellipsis;
+.mui-bar-tab .my-tab-item .mui-icon ~ .mui-tab-label {
+  font-size: 11px;
+  display: block;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
-
-
-
-
-
-
-
-
-
 </style>

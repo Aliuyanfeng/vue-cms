@@ -1,5 +1,5 @@
 <template>
-  <div class="mui-numbox" data-numbox-min="1" :data-numbox-max="max">
+  <div class="mui-numbox" data-numbox-min="1" >
     <button class="mui-btn mui-btn-numbox-minus" type="button" >-</button>
     <input id="test" class="mui-input-numbox" type="number" value="1"  ref="nobox" @change="countchanged"/>
     <button class="mui-btn mui-btn-numbox-plus" type="button" >+</button>
@@ -14,19 +14,12 @@ export default {
   methods: {
     countchanged(){
       const val = this.$refs.nobox.value 
-      this.$emit('func',parseInt(val))
     }   
   },
   created() {},
   mounted() {
     // console.log(this.max);
     mui("mui-numbox").numbox();
-  },
-  props: ["max"],
-  watch: {
-    max: function (newval) {
-      mui(".mui-numbox").numbox().setOption("max", newval);
-    },
   },
 };
 </script>

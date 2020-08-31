@@ -1,17 +1,20 @@
 <template>
   <div class="shopcar-container">
     <div class="goods-list">
-      <div class="mui-card">
+      <div class="mui-card" v-for="item in goodslist" :key="item.id">
         <div class="mui-card-content">
           <div class="mui-card-content-inner goods-item">
-            <mt-switch></mt-switch>
-            <img src alt />
+            <mt-switch
+              v-model="selectedobj[item.id]"
+              @change="changeselect(item.id,selectedobj[item.id])"
+            ></mt-switch>
+            <img :src="item.thumb_path" alt />
             <div class="info">
-              <h1>aaaaa</h1>
+              <h1>{{item.title}}</h1>
               <div class="goods-info">
-                <span class="price">2199</span>
-                <nobox></nobox>
-                <a href>del</a>
+                <span class="price">${{item.sell_price}}</span>
+                <nobox :initcount="countobj[item.id]" :id="item.id"></nobox>
+                <a href="#" @click.prevent="del(item.id)">删除</a>
               </div>
             </div>
           </div>
@@ -25,8 +28,8 @@
               <p>总计（不含运费）</p>
               <p>
                 已勾选商品
-                <span class="danger">0</span>件，总价
-                <span class="danger">￥0</span>
+                <span class="danger">{{selectedcount}}</span>件，总价
+                <span class="danger">￥{{amount}}</span>
               </p>
             </div>
             <mt-button type="danger">去结算</mt-button>
@@ -38,14 +41,45 @@
 </template>
 
 <script>
+import { mapGetters, mapMutations } from "vuex";
 import nobox from "../sub-components/shopcar_numbox.vue";
 export default {
   data() {
-    return {};
+    return {
+      goodslist: [],
+    };
   },
-  methods: {},
+  created() {
+    this.getgoodslist();
+  },
+  methods: {
+    ...mapMutations(["delfromcart", "changeselectstate"]),
+    async getgoodslist() {
+      if (this.idstr.length <= 0) return;
+      const { data } = await this.$http.get(
+        "/api/goods/getshopcarlist/" + this.idstr
+      );
+      if (data.status === 0) return (this.goodslist = data.message);
+    },
+    del(id) {
+      console.log(id);
+      this.goodslist.some((item, i) => {
+        if (item.id == id) {
+          this.goodslist.splice(i, 1);
+          return true;
+        }
+      });
+      this.delfromcart(id);
+    },
+    changeselect(id, select) {
+      this.changeselectstate({ id, selected: select });
+    },
+  },
   components: {
     nobox,
+  },
+  computed: {
+    ...mapGetters(["idstr", "countobj", "selectedobj",'selectedcount','amount']),
   },
 };
 </script>

@@ -97,7 +97,12 @@ export default {
       //   id: this.id,
       //   count: this.selectedCount,
       // });
-      this.addtocart({ id: this.id, count: this.selectedCount });
+      this.addtocart({
+        id: this.id,
+        count: this.selectedCount,
+        selected: true,
+        price:this.goodsinfo.sell_price
+      });
     },
     beforeEnter(el) {
       el.style.transform = "translate(0,0)";
